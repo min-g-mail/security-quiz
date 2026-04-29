@@ -3,17 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>情報セキュリティ・個人情報保護 理解度チェック｜株式会社トレスタシステム</title>
+<title>2026年度 情報セキュリティ・個人情報保護 理解度チェック｜株式会社トレスタシステム</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.7; }
   header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 32px 20px; text-align: center; }
+  header .year-badge { display: inline-block; background: #3a7bd5; font-size: 0.85em; font-weight: bold; padding: 3px 14px; border-radius: 99px; margin-bottom: 10px; letter-spacing: 0.05em; }
   header h1 { font-size: 1.4em; font-weight: bold; margin-bottom: 8px; }
   header p { font-size: 0.9em; opacity: 0.85; }
   .container { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
   .progress-bar-wrap { background: #dde3ed; border-radius: 99px; height: 8px; margin: 20px 0 4px; }
   .progress-bar { background: #3a7bd5; height: 8px; border-radius: 99px; transition: width 0.4s; width: 0%; }
   .progress-label { font-size: 0.82em; color: #666; text-align: right; margin-bottom: 20px; }
+
+  /* Quiz cards */
   .q-card { background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 28px; overflow: hidden; display: none; }
   .q-card.active { display: block; }
   .q-header { background: #3a7bd5; color: white; padding: 14px 20px; font-size: 0.85em; font-weight: bold; display: flex; justify-content: space-between; }
@@ -21,7 +24,6 @@
   .q-text { font-size: 1.05em; font-weight: bold; margin-bottom: 20px; }
   .choice { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border: 2px solid #e0e6f0; border-radius: 10px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.97em; }
   .choice:hover { border-color: #3a7bd5; background: #f0f5ff; }
-  .choice.selected { border-color: #3a7bd5; background: #e8f0fe; }
   .choice.correct { border-color: #27ae60; background: #e8f8f0; }
   .choice.wrong { border-color: #e74c3c; background: #fdf0ef; }
   .choice-label { font-weight: bold; color: #3a7bd5; min-width: 22px; }
@@ -35,22 +37,48 @@
   .btn-next { display: block; margin: 18px auto 0; padding: 12px 36px; background: #3a7bd5; color: white; border: none; border-radius: 99px; font-size: 1em; font-weight: bold; cursor: pointer; transition: background 0.2s; }
   .btn-next:hover { background: #2868c0; }
   .btn-next:disabled { background: #aab8d0; cursor: default; }
-  #result-screen { display: none; background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 40px 24px; text-align: center; }
+
+  /* Result screen */
+  #result-screen { display: none; }
+  .result-card { background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 36px 24px; text-align: center; margin-bottom: 20px; }
   .score-circle { width: 130px; height: 130px; border-radius: 50%; background: linear-gradient(135deg, #3a7bd5, #1a1a2e); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 24px; }
   .score-num { font-size: 2.4em; font-weight: bold; line-height: 1; }
   .score-denom { font-size: 0.9em; opacity: 0.85; }
   #result-screen h2 { font-size: 1.3em; margin-bottom: 10px; }
-  #result-message { color: #555; margin-bottom: 28px; font-size: 0.97em; }
-  .btn-retry { padding: 12px 40px; background: #3a7bd5; color: white; border: none; border-radius: 99px; font-size: 1em; font-weight: bold; cursor: pointer; }
-  .btn-retry:hover { background: #2868c0; }
-  #review-list { text-align: left; margin-top: 32px; }
-  #review-list h3 { font-size: 1em; border-bottom: 2px solid #e0e6f0; padding-bottom: 8px; margin-bottom: 14px; }
+  #result-message { color: #555; font-size: 0.97em; margin-bottom: 28px; }
+  .btn-retry { padding: 12px 40px; background: #f0f4f8; color: #444; border: 2px solid #dde3ed; border-radius: 99px; font-size: 0.95em; font-weight: bold; cursor: pointer; margin-top: 8px; }
+  .btn-retry:hover { background: #e0e6f0; }
+
+  /* Email section */
+  .email-card { background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 28px 24px; margin-bottom: 20px; }
+  .email-card h3 { font-size: 1.05em; font-weight: bold; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .email-card .subtitle { font-size: 0.85em; color: #888; margin-bottom: 20px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 0.88em; font-weight: bold; color: #444; margin-bottom: 6px; }
+  .required-badge { display: inline-block; background: #e74c3c; color: white; font-size: 0.75em; padding: 1px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+  .optional-badge { display: inline-block; background: #888; color: white; font-size: 0.75em; padding: 1px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+  .form-group input { width: 100%; padding: 11px 14px; border: 2px solid #e0e6f0; border-radius: 8px; font-size: 0.97em; font-family: inherit; transition: border-color 0.2s; }
+  .form-group input:focus { outline: none; border-color: #3a7bd5; }
+  .send-to-box { background: #f7f9fc; border: 1px solid #e0e6f0; border-radius: 8px; padding: 12px 14px; font-size: 0.83em; color: #555; margin-bottom: 20px; line-height: 1.8; }
+  .send-to-box strong { color: #333; display: block; margin-bottom: 4px; }
+  .btn-send { display: block; width: 100%; padding: 14px; background: #3a7bd5; color: white; border: none; border-radius: 10px; font-size: 1.05em; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+  .btn-send:hover { background: #2868c0; }
+  .btn-send:disabled { background: #aab8d0; cursor: default; }
+  .send-status { margin-top: 14px; text-align: center; font-size: 0.95em; min-height: 24px; }
+  .status-ok { color: #27ae60; font-weight: bold; }
+  .status-err { color: #e74c3c; font-weight: bold; }
+  .status-ing { color: #3a7bd5; }
+
+  /* Review */
+  .review-card { background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 24px; }
+  .review-card h3 { font-size: 1em; border-bottom: 2px solid #e0e6f0; padding-bottom: 8px; margin-bottom: 14px; }
   .review-item { display: flex; gap: 10px; font-size: 0.88em; padding: 8px 0; border-bottom: 1px solid #f0f4f8; }
   .review-icon { font-size: 1.1em; min-width: 20px; }
 </style>
 </head>
 <body>
 <header>
+  <div class="year-badge">2026年度</div>
   <h1>情報セキュリティ・個人情報保護規定<br>理解度チェック（全20問）</h1>
   <p>株式会社トレスタシステム ／ 社員研修用</p>
 </header>
@@ -58,18 +86,55 @@
   <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar"></div></div>
   <div class="progress-label" id="progress-label">0 / 20 問</div>
   <div id="quiz-area"></div>
+
   <div id="result-screen">
-    <div class="score-circle"><span class="score-num" id="score-num">0</span><span class="score-denom">/ 20 点</span></div>
-    <h2 id="result-title"></h2>
-    <p id="result-message"></p>
-    <button class="btn-retry" onclick="startQuiz()">もう一度挑戦する</button>
-    <div id="review-list">
+    <!-- スコア表示 -->
+    <div class="result-card">
+      <div class="score-circle">
+        <span class="score-num" id="score-num">0</span>
+        <span class="score-denom">/ 20 点</span>
+      </div>
+      <h2 id="result-title"></h2>
+      <p id="result-message"></p>
+      <button class="btn-retry" onclick="startQuiz()">もう一度挑戦する</button>
+    </div>
+
+    <!-- メール送信フォーム -->
+    <div class="email-card">
+      <h3>📧 結果をメールで送信する</h3>
+      <p class="subtitle">お名前を入力して「送信」ボタンを押してください。担当者に自動でメールが届きます。</p>
+
+      <div class="form-group">
+        <label>お名前<span class="required-badge">必須</span></label>
+        <input type="text" id="sender-name" placeholder="例：山田 太郎" maxlength="40">
+      </div>
+
+      <div class="send-to-box">
+        <strong>自動送信先（変更不可）</strong>
+        k.nakada@tresta-s.jp<br>
+        m.nakazawa@tresta-s.jp<br>
+        tresta.kyotsu@px-ins.jp
+      </div>
+
+      <div class="form-group">
+        <label>追加で送りたいメールアドレス<span class="optional-badge">任意</span></label>
+        <input type="email" id="extra-email" placeholder="例：sample@example.com">
+      </div>
+
+      <button class="btn-send" id="btn-send" onclick="sendResult()">📤 結果を送信する</button>
+      <div class="send-status" id="send-status"></div>
+    </div>
+
+    <!-- 正誤一覧 -->
+    <div class="review-card">
       <h3>問題の正誤一覧</h3>
       <div id="review-items"></div>
     </div>
   </div>
 </div>
+
 <script>
+
 const questions = [
   {
     q: "Q1. この規定の目的として正しいものはどれですか？",
@@ -195,10 +260,15 @@ const questions = [
 
 let current = 0, score = 0, answers = [], answered = false;
 
+
 function startQuiz() {
   current = 0; score = 0; answers = [];
   document.getElementById('result-screen').style.display = 'none';
   document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('sender-name').value = '';
+  document.getElementById('extra-email').value = '';
+  document.getElementById('send-status').textContent = '';
+  document.getElementById('btn-send').disabled = false;
   renderQuestion();
 }
 
@@ -226,7 +296,9 @@ function renderQuestion() {
         <div class="result-label" id="result-label"></div>
         <div id="exp-text"></div>
       </div>
-      <button class="btn-next" id="btn-next" onclick="nextQuestion()" disabled>${current === questions.length - 1 ? '結果を見る' : '次の問題へ →'}</button>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()" disabled>
+        ${current === questions.length - 1 ? '結果を見る' : '次の問題へ →'}
+      </button>
     </div>`;
   area.appendChild(card);
 }
@@ -243,8 +315,7 @@ function selectChoice(i) {
     if (idx === correct) el.classList.add('correct');
     else if (idx === i) el.classList.add('wrong');
   });
-  const expEl = document.getElementById('explanation');
-  expEl.classList.add('show');
+  document.getElementById('explanation').classList.add('show');
   document.getElementById('result-label').innerHTML = i === correct
     ? '<span class="correct-label">✅ 正解！</span>'
     : `<span class="wrong-label">❌ 不正解。正解は【${['A','B','C','D'][correct]}】です。</span>`;
@@ -269,18 +340,70 @@ function showResult() {
   document.getElementById('progress-label').textContent = `${questions.length} / ${questions.length} 問`;
   document.getElementById('result-screen').style.display = 'block';
   document.getElementById('score-num').textContent = score;
+
   const [title, msg] = score === 20
     ? ['🏆 満点！完璧です！', '規定をしっかり理解されています。引き続き実務でも意識して行動しましょう。']
     : score >= 16
     ? ['🎉 優秀な成績です！', '規定の主要な内容を理解できています。間違えた箇所を確認して完璧を目指しましょう。']
     : score >= 12
     ? ['👍 合格ラインです！', '基本的な内容は理解できています。間違えた問題の規定条文を読み直してみましょう。']
-    : ['📚 もう一度チャレンジしましょう！', '規定を読み返した後、再度チャレンジしてみてください。'];
+    : ['📚 もう一度チャレンジしましょう！', '規定を読み返した後、再度チャレンジしてください。理解を深めることが大切です。'];
   document.getElementById('result-title').textContent = title;
   document.getElementById('result-message').textContent = msg;
+
   document.getElementById('review-items').innerHTML = answers.map(a =>
-    `<div class="review-item"><span class="review-icon">${a.correct ? '✅' : '❌'}</span><span>問題 ${a.q + 1}：${questions[a.q].q.replace(/^Q\d+\. /, '')}</span></div>`
+    `<div class="review-item">
+      <span class="review-icon">${a.correct ? '✅' : '❌'}</span>
+      <span>問題 ${a.q + 1}：${questions[a.q].q.replace(/^Q\d+\. /, '')}</span>
+    </div>`
   ).join('');
+}
+
+async function sendResult() {
+  const name = document.getElementById('sender-name').value.trim();
+  if (!name) {
+    alert('お名前を入力してください。');
+    document.getElementById('sender-name').focus();
+    return;
+  }
+
+  const extraEmail = document.getElementById('extra-email').value.trim();
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const evalText = score === 20 ? '満点' : score >= 16 ? '優秀' : score >= 12 ? '合格' : '要再学習';
+  const detailLines = answers.map(a => `Q${a.q + 1}：${a.correct ? '○ 正解' : '× 不正解'}`).join('\n');
+
+  const statusEl = document.getElementById('send-status');
+  const btnSend = document.getElementById('btn-send');
+  statusEl.className = 'send-status status-ing';
+  statusEl.textContent = '送信中...';
+  btnSend.disabled = true;
+
+  try {
+    const res = await fetch('/api/send-result', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user_name:   name,
+        score:       `${score} / 20点`,
+        evaluation:  evalText,
+        date:        dateStr,
+        details:     detailLines,
+        extra_email: extraEmail
+      })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Server error');
+    }
+    statusEl.className = 'send-status status-ok';
+    statusEl.textContent = '✅ 送信が完了しました。担当者にメールが届いています。';
+  } catch (err) {
+    statusEl.className = 'send-status status-err';
+    statusEl.textContent = '❌ 送信に失敗しました。時間をおいて再度お試しください。';
+    btnSend.disabled = false;
+    console.error(err);
+  }
 }
 
 window.onload = startQuiz;
