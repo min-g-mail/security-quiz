@@ -55,7 +55,7 @@ ${details}
 
   try {
     await transporter.sendMail({
-      from: `"研修システム" <${process.env.EMAIL_USER}>`,
+      from: process.env.EMAIL_USER,
       to: toList.join(', '),
       subject,
       text,
