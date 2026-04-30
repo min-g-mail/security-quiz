@@ -2,6 +2,6 @@
   "name": "security-quiz",
   "version": "1.0.0",
   "dependencies": {
-    "nodemailer": "^6.9.14"
+    "resend": "^4.0.0"
   }
 }

@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
 const FIXED_RECIPIENTS = [
   'k.nakada@tresta-s.jp',
@@ -20,16 +20,6 @@ module.exports = async (req, res) => {
 
   const toList = [...FIXED_RECIPIENTS];
   if (extra_email && extra_email.trim()) toList.push(extra_email.trim());
-
-  const transporter = nodemailer.createTransport({
-    host: 'nakada-kazuma.sakura.ne.jp',
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
 
   const subject = `【2026年度 理解度チェック結果】${user_name}さん`;
 
@@ -54,12 +44,14 @@ ${details}
 `.trim();
 
   try {
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: toList.join(', '),
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const { error } = await resend.emails.send({
+      from: 'no-reply@tresta-s.jp',
+      to: toList,
       subject,
       text,
     });
+    if (error) throw new Error(error.message);
     return res.status(200).json({ success: true });
   } catch (err) {
     console.error('Mail error:', err);
