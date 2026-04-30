@@ -22,14 +22,13 @@ module.exports = async (req, res) => {
   if (extra_email && extra_email.trim()) toList.push(extra_email.trim());
 
   const transporter = nodemailer.createTransport({
-    host: 'smtp.office365.com',
+    host: 'nakada-kazuma.sakura.ne.jp',
     port: 587,
     secure: false,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
-    tls: { ciphers: 'SSLv3' },
   });
 
   const subject = `【2026年度 理解度チェック結果】${user_name}さん`;
